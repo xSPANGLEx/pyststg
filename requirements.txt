@@ -1,0 +1,4 @@
+Click==7.0
+gitdb2==2.0.5
+GitPython==3.0.2
+smmap2==2.0.5
