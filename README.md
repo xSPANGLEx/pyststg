@@ -27,7 +27,7 @@ cd pyststg
 pip install -r requirements.txt
 ```
 
-### How to use
+### Usage 
 
 To use, just run below commands.
 
