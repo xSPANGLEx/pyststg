@@ -17,7 +17,9 @@ class Auditor(object):
         raise NotImplementedError()
 
     def audit(self) -> list:
-        result = self.repository.grep(self.regex_word)
+        _id = self.repository.run(self.regex_word)
+        self.repository.join(_id)
+        result = self.repository.get_result(_id)
         return self.extend_filter(result)
 
 
@@ -26,7 +28,7 @@ class Audit(object):
     def __init__(self, repository):
         self.repository = git.Git(repository)
 
-    def execute(self):
+    def execute(self) -> list:
         modules = [
                 name.split(".py")[0].replace("/", ".")
                 for name in glob.glob("patterns/*")
@@ -36,9 +38,9 @@ class Audit(object):
                 importlib.import_module(module)
                 for module in modules
                 ]
-        results = set()
+        results: set = set()
         for auditor in auditors:
-            result = auditor.Audit(self.repository).audit()
+            result = auditor.Audit(self.repository).audit()  # type: ignore
             for line in result:
                 results.add(line)
         return list(results)
